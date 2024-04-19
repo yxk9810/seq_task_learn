@@ -21,6 +21,6 @@ class SeqModel(nn.Module):
         #
         seg_repr = torch.reshape(output,[-1,16,self.config.hidden_size])
         logits = self.linear(seg_repr)
-        logits = torch.reshape(logits,(-1,16))    
+        logits = torch.reshape(logits,(-1,16,5)) 
         return logits
 
