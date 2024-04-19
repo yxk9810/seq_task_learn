@@ -38,7 +38,7 @@ class ZhWikipediaDataSet(Dataset):
         return len(self.dataset)
 
 def collate_fn_wiki(batch):
-    max_sentences_num =16 
+    max_sentences_num =64
     max_sequence_len = 64 
     batch_data = [] 
     batch_targets = [] 

@@ -59,10 +59,7 @@ def evaluate(model,dev_data_loader):
         loss_fct =  nn.CrossEntropyLoss()
         loss = loss_fct(logits.view(-1,config.class_num),labels.view(-1))
         loss_item = loss.item()
-        # sigmoid_fct = torch.nn.Sig()
         preds =torch.argmax(torch.softmax(logits,dim=-1),dim=-1).detach().cpu().numpy()
-        # print(preds)
-        # sys.exit(1)
         gold = batch[2].detach().cpu().numpy()
         for i in range(len(gold)):
             if gold[i].tolist() == preds[i].tolist():
