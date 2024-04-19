@@ -25,6 +25,7 @@ from config import Config
 config = Config()
 model = SeqModel(config)
 model.to(device)
+from sklearn.metrics import classification_report
 optimizer = AdamW(model.parameters(),lr = config.learning_rate)
 
 
@@ -53,6 +54,8 @@ def evaluate(model,dev_data_loader):
     model.eval()
     total_loss,total_accuracy = 0,0 
     count = 0 
+    golds= []
+    preds = [] 
     for step,batch in enumerate(dev_data_loader):
         sent_id,mask,labels = batch[0].to(device),batch[1].to(device),batch[2].to(device)
         logits = model(sent_id,mask)
@@ -61,11 +64,14 @@ def evaluate(model,dev_data_loader):
         loss_item = loss.item()
         preds =torch.argmax(torch.softmax(logits,dim=-1),dim=-1).detach().cpu().numpy()
         gold = batch[2].detach().cpu().numpy()
+        
         for i in range(len(gold)):
+            golds.extend(gold[i].tolist())
+            preds.extend(preds[i].tolist())
             if gold[i].tolist() == preds[i].tolist():
                 count+=1
         total_loss+=loss_item
-
+    print(classification_report(golds,preds))
     avg_loss = total_loss/ len(dev_data_loader)
     return avg_loss,count/len(dev_data_loader)
 
