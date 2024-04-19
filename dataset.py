@@ -58,7 +58,7 @@ def collate_fn_wiki(batch):
     seq = torch.tensor(tokens['input_ids'])
     mask = torch.tensor(tokens['attention_mask'])
     #y = torch.tensor(batched_targets,dtype=torch.float32).unsqueeze(axis=1)
-    y = torch.tensor(batch_targets,dtype=torch.Long)    
+    y = torch.tensor(batch_targets,dtype=dtype=torch.long)    
     return seq, mask, y
 
         
