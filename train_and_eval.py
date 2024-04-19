@@ -61,8 +61,8 @@ def evaluate(model,dev_data_loader):
         loss_item = loss.item()
         # sigmoid_fct = torch.nn.Sig()
         preds =torch.argmax(torch.softmax(logits,dim=-1),dim=-1).detach().cpu().numpy()
-        print(preds)
-        sys.exit(1)
+        # print(preds)
+        # sys.exit(1)
         gold = batch[2].detach().cpu().numpy()
         for i in range(len(gold)):
             if gold[i].tolist() == preds[i].tolist():
