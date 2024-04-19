@@ -55,7 +55,7 @@ def evaluate(model,dev_data_loader):
     total_loss,total_accuracy = 0,0 
     count = 0 
     golds= []
-    preds = [] 
+    predicts = [] 
     for step,batch in enumerate(dev_data_loader):
         sent_id,mask,labels = batch[0].to(device),batch[1].to(device),batch[2].to(device)
         logits = model(sent_id,mask)
@@ -67,7 +67,7 @@ def evaluate(model,dev_data_loader):
         
         for i in range(len(gold)):
             golds.extend(gold[i].tolist())
-            preds.extend(preds[i].tolist())
+            predicts.extend(preds[i].tolist())
             if gold[i].tolist() == preds[i].tolist():
                 count+=1
         total_loss+=loss_item
