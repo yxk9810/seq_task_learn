@@ -1,5 +1,4 @@
 #coding:utf-8
-from symbol import file_input
 import torch 
 import sys 
 from dataset import ZhWikipediaDataSet,collate_fn_wiki
