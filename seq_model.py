@@ -19,8 +19,8 @@ class SeqModel(nn.Module):
         pooled_output  = torch.mean(last_hidden,dim=1)
         output = self.dropout(pooled_output)
         #
-        seg_repr = torch.reshape(output,[-1,16,self.config.hidden_size])
+        seg_repr = torch.reshape(output,[-1,64,self.config.hidden_size])
         logits = self.linear(seg_repr)
-        logits = torch.reshape(logits,(-1,16,5)) 
+        logits = torch.reshape(logits,(-1,64,5)) 
         return logits
 
