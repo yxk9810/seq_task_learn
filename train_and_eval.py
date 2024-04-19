@@ -71,7 +71,7 @@ def evaluate(model,dev_data_loader):
             if gold[i].tolist() == preds[i].tolist():
                 count+=1
         total_loss+=loss_item
-    print(classification_report(golds,preds))
+    print(classification_report(golds,predicts))
     avg_loss = total_loss/ len(dev_data_loader)
     return avg_loss,count/len(dev_data_loader)
 
