@@ -36,10 +36,7 @@ def train(model,train_data_loader):
         model.zero_grad()
         logits = model(sent_id,mask)
         loss_fct =  nn.CrossEntropyLoss()
-        # print(logits.size())
-        # print(labels)
-        # sys.exit(1)
-        loss = loss_fct(logits,labels)
+        loss = loss_fct(logits.view(-1,config.class_num),labels.view(-1))
         loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         #update parameters 
