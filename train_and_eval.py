@@ -64,8 +64,8 @@ def evaluate(model,dev_data_loader):
         loss_item = loss.item()
         preds =torch.argmax(torch.softmax(logits,dim=-1),dim=-1).detach().cpu().numpy()
         gold = batch[2].detach().cpu().numpy()
-        print(gold.shape)
-        print(preds.shape)
+        # print(gold.shape)
+        # print(preds.shape)
         for i in range(len(gold)):
             golds.extend(gold[i].tolist())
             predicts.extend(preds[i].tolist())
