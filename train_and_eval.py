@@ -57,7 +57,7 @@ def evaluate(model,dev_data_loader):
         sent_id,mask,labels = batch[0].to(device),batch[1].to(device),batch[2].to(device)
         logits = model(sent_id,mask)
         loss_fct =  nn.CrossEntropyLoss()
-        loss = loss_fct(logits,labels)
+        loss = loss_fct(logits.view(-1,config.class_num),labels.view(-1))
         loss_item = loss.item()
         # sigmoid_fct = torch.nn.Sig()
         preds =torch.argmax(torch.softmax(logits,dim=-1),dim=-1).detach().cpu().numpy()
