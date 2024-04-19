@@ -18,8 +18,9 @@ class SeqModel(nn.Module):
         last_hidden,_= self.encoder(input_ids=input_ids, attention_mask=input_mask)[:2]
         pooled_output  = torch.mean(last_hidden,dim=1)
         output = self.dropout(pooled_output)
-        logits = self.linear(output)
-        batch_size =logits.size()[0]
+        #
+        seg_repr = torch.reshape(output,[-1,16,self.config.hidden_size])
+        logits = self.linear(seg_repr)
         logits = torch.reshape(logits,(-1,16))    
         return logits
 
