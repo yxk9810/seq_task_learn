@@ -4,7 +4,7 @@ import sys
 from dataset import ZhWikipediaDataSet,collate_fn_wiki
 from torch.utils.data import DataLoader
 from transformers import AdamW
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda")
 from seq_model import SeqModel
 import torch.nn as nn 
 import os 
@@ -24,6 +24,7 @@ torch.backends.cudnn.deterministic = True
 from config import Config 
 config = Config()
 model = SeqModel(config)
+model.to(device)
 optimizer = AdamW(model.parameters(),lr = config.learning_rate)
 
 
