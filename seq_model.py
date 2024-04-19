@@ -10,6 +10,8 @@ class SeqModel(nn.Module):
         self.config = config 
         self.dropout = nn.Dropout(0.1)
         self.encoder  = BertModel.from_pretrained(pretrained_model_name_or_path=config.pretrain_model_path)
+        self.bi_lstm2 = torch.nn.LSTM(input_size=config.hidden_size, hidden_size=config.hidden_size // 2, bidirectional=True, batch_first=True)
+
         self.linear = nn.Linear(config.hidden_size,config.class_num)
 
 
