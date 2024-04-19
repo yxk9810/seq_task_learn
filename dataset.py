@@ -4,9 +4,8 @@ from tqdm import tqdm
 import json 
 from transformers import BertTokenizer  
 import torch 
-
-tokenizer = BertTokenizer.from_pretrained('/Users/wujindou/Downloads/pretrained_models/bert-base-chinese')
-
+from config import checkpoint_name
+tokenizer = BertTokenizer.from_pretrained(checkpoint_name)
 
 class ZhWikipediaDataSet(Dataset):
     def __init__(self, filepath='',is_train = True,mini_test = True):
