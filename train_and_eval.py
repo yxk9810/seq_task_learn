@@ -68,6 +68,9 @@ def evaluate(model,dev_data_loader):
         for i in range(len(gold)):
             golds.extend(gold[i].tolist())
             predicts.extend(preds[i].tolist())
+            print(golds[-1])
+            print(predicts[-1])
+            sys.exit(1)
             if gold[i].tolist() == preds[i].tolist():
                 count+=1
         total_loss+=loss_item
