@@ -11,3 +11,4 @@ class Config:
     dev_file = './data/track1_dev.txt'
     test_file = './data/track1_test.txt'
     target_dir = './models/'
+    seq_len = 16
