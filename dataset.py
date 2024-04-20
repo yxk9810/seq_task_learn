@@ -6,7 +6,8 @@ from transformers import BertTokenizer
 import torch 
 from config import checkpoint_name
 tokenizer = BertTokenizer.from_pretrained(checkpoint_name)
-
+from config import Config 
+config = Config()
 class ZhWikipediaDataSet(Dataset):
     def __init__(self, filepath='',is_train = True,mini_test = True):
         self.mini_test = mini_test
@@ -38,7 +39,7 @@ class ZhWikipediaDataSet(Dataset):
         return len(self.dataset)
 
 def collate_fn_wiki(batch):
-    max_sentences_num =64
+    max_sentences_num = config.seq_len
     max_sequence_len = 64 
     batch_data = [] 
     batch_targets = [] 
