@@ -87,7 +87,7 @@ def evaluate(model,dev_data_loader):
         #loss = loss_fct(logits.view(-1,config.class_num),labels.view(-1))
         loss= F.binary_cross_entropy_with_logits(logits.view(-1,config.class_num),labels)
         loss_item = loss.item()
-        preds =torch.sigmoid(logits).view(-1,config.seq_len,config.class_num).detach().cpu().numpy()
+        preds =torch.sigmoid(logits).view(-1,config.class_num).detach().cpu().numpy()
         gold = batch[2].detach().cpu().numpy()
         # preds = preds.reshape(np.shape(gold)[0],config.seq_len,config.class_num)
         print(np.shape(gold))
@@ -95,6 +95,7 @@ def evaluate(model,dev_data_loader):
         for i in range(len(gold)):
             gold_list = gold[i].tolist()
             pred_list = preds[i].tolist()
+            pred_list =[int(p>0.5) for p in pred_list]
             # print(len(gold_list))
             # print(len(gold))
             # print(gold_list)
@@ -105,22 +106,29 @@ def evaluate(model,dev_data_loader):
             # sys.exit(1)
             tmp_gold = []
             tmp_preds =[] 
-            for g,p in zip(gold_list,pred_list):
-
+            for idx,(g,p) in enumerate(zip(gold_list,pred_list)):
+                if g==1:
+                    tmp_gold.append(idx)
+                else:
+                    tmp_gold.append(0)
+                if p==1:
+                    tmp_preds.append(idx)
+                else:
+                    tmp_preds.append(0)
             #     if g==-100:continue 
             #     tmp_gold.append(g)
             #     tmp_preds.append(p)
                 #golds.extend(g)
-                for t_idx,tg in enumerate(g):
-                    if tg==1:
-                        tmp_gold.append(t_idx)
-                    else:
-                        tmp_gold.append(0)
-                for t_idx,tp in enumerate(p):
-                    if tp>=0.5:
-                        tmp_preds.append(t_idx)
-                    else:
-                        tmp_preds.append(0)
+                # for t_idx,tg in enumerate(g):
+                #     if tg==1:
+                #         tmp_gold.append(t_idx)
+                #     else:
+                #         tmp_gold.append(0)
+                # for t_idx,tp in enumerate(p):
+                #     if tp>=0.5:
+                #         tmp_preds.append(t_idx)
+                #     else:
+                #         tmp_preds.append(0)
                     
             golds.extend(tmp_gold)
             predicts.extend(tmp_preds)
