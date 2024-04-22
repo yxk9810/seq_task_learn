@@ -9,7 +9,7 @@ tokenizer = BertTokenizer.from_pretrained(checkpoint_name)
 from config import Config 
 config = Config()
 class ZhWikipediaDataSet(Dataset):
-    def __init__(self, filepath='',is_train = True,mini_test = True):
+    def __init__(self, filepath='',is_train = True,mini_test = False):
         self.mini_test = mini_test
         self.dataset = self.load_json_data(filepath)
     
