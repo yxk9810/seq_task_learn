@@ -20,11 +20,11 @@ class SeqModel(nn.Module):
         last_hidden,_= self.encoder(input_ids=input_ids, attention_mask=input_mask)[:2]
         pooled_output  = torch.mean(last_hidden,dim=1)
         output = self.dropout(pooled_output)
-        # inter_seg_output, hidden2 = self.bi_lstm2(output)  # [b,num_seg,768]=>[b,num_seg,768], [b,2,d_model//2]
-        # inter_seg_output = self.dropout(inter_seg_output)
+        inter_seg_output, hidden2 = self.bi_lstm2(output)  # [b,num_seg,768]=>[b,num_seg,768], [b,2,d_model//2]
+        inter_seg_output = self.dropout(inter_seg_output)
         #
-        seg_repr = torch.reshape(output,[-1,self.config.seq_len,self.config.hidden_size])
+        seg_repr = torch.reshape(output,[inter_seg_output,self.config.seq_len,self.config.hidden_size])
         logits = self.linear(seg_repr)
-        logits = torch.reshape(logits,(-1,self.config.seq_len,5)) 
+        logits = torch.reshape(logits,(-1,self.config.seq_len,self.config.class_num)) 
         return logits
 
