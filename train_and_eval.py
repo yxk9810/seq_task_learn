@@ -119,7 +119,7 @@ def evaluate(model,dev_data_loader):
     return avg_loss,count/len(dev_data_loader)
 
 
-dataset = ZhWikipediaDataSet(filepath=config.train_file)
+dataset = ZhWikipediaDataSet(filepath=config.train_file,mini_test=True)
 print("train data siz {}".format(len(dataset)))
 train_data_loader = DataLoader(dataset, batch_size=2, collate_fn = collate_fn_wiki, shuffle=True)
 dev_dataset = ZhWikipediaDataSet(filepath=config.dev_file)
