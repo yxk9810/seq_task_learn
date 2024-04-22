@@ -18,7 +18,8 @@ class SeqModel(nn.Module):
     def forward(self,input_ids,input_mask):
 
         last_hidden,_= self.encoder(input_ids=input_ids, attention_mask=input_mask)[:2]
-        pooled_output  = torch.mean(last_hidden,dim=1)
+        #pooled_output  = torch.mean(last_hidden,dim=1)
+        pooled_output = last_hidden[:,0,:]
         output = self.dropout(pooled_output)
         inter_seg_output, hidden2 = self.bi_lstm2(output)  # [b,num_seg,768]=>[b,num_seg,768], [b,2,d_model//2]
         inter_seg_output = self.dropout(inter_seg_output)
