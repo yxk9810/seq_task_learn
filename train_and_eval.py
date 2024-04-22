@@ -91,23 +91,23 @@ def evaluate(model,dev_data_loader):
         gold = batch[2].detach().cpu().numpy()
         for i in range(len(gold)):
             gold_list = gold[i].tolist()
-            print(len(gold_list))
-            print(len(gold))
-            print(gold_list)
+            # print(len(gold_list))
+            # print(len(gold))
+            # print(gold_list)
             pred_list = preds[i].tolist()
-            print(gold_list[0])
-            print(pred_list[0])
-            print(len(gold_list[0]))
-            sys.exit(1)
-            tmp_gold = []
-            tmp_preds =[] 
-            for g,p in zip(gold_list,pred_list):
-                if g==-100:continue 
-                tmp_gold.append(g)
-                tmp_preds.append(p)
-            golds.extend(tmp_gold)
-            predicts.extend(tmp_preds)
-            if tmp_gold==tmp_preds:
+            # print(gold_list[0])
+            # print(pred_list[0])
+            # print(len(gold_list[0]))
+            # sys.exit(1)
+            # tmp_gold = []
+            # tmp_preds =[] 
+            # for g,p in zip(gold_list,pred_list):
+            #     if g==-100:continue 
+            #     tmp_gold.append(g)
+            #     tmp_preds.append(p)
+            golds.extend(gold_list)
+            predicts.extend(pred_list)
+            if gold_list == pred_list:
                 count+=1
         total_loss+=loss_item
     print(classification_report(golds,predicts))
