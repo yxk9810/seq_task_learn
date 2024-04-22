@@ -113,7 +113,7 @@ def evaluate(model,dev_data_loader):
 
 dataset = ZhWikipediaDataSet(filepath=config.train_file)
 print("train data siz {}".format(len(dataset)))
-train_data_loader = DataLoader(dataset, batch_size=4, collate_fn = collate_fn_wiki, shuffle=True)
+train_data_loader = DataLoader(dataset, batch_size=2, collate_fn = collate_fn_wiki, shuffle=True)
 dev_dataset = ZhWikipediaDataSet(filepath=config.dev_file)
 print("train data siz {}".format(len(dev_dataset)))
 
