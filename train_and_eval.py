@@ -92,6 +92,9 @@ def evaluate(model,dev_data_loader):
         for i in range(len(gold)):
             gold_list = gold[i].tolist()
             gold_list = [int(v) for v in gold_list]
+            print(len(preds[i]))
+            print(len(gold_list))
+            sys.exit(1)
             # print(len(gold_list))
             # print(len(gold))
             # print(gold_list)
