@@ -67,14 +67,22 @@ def evaluate(model,dev_data_loader):
         # print(gold.shape)
         # print(preds.shape)
         for i in range(len(gold)):
-            golds.extend(gold[i].tolist())
-            predicts.extend(preds[i].tolist())
+            gold_list = gold[i].tolist()
+            pred_list = preds[i].tolist()
+            tmp_gold = []
+            tmp_preds =[] 
+            for g,p in zip(gold_list,pred_list):
+                if g==-100:continue 
+                tmp_gold.append(g)
+                tmp_preds.append(p)
+            golds.extend(tmp_gold)
+            predicts.extend(tmp_preds)
             # print(gold[i].tolist())
             # print(preds[i].tolist())
             # print(golds[-1])
             # print(predicts[-1])
             # sys.exit(1)
-            if gold[i].tolist() == preds[i].tolist():
+            if tmp_gold==tmp_preds:
                 count+=1
         total_loss+=loss_item
     print(classification_report(golds,predicts))
