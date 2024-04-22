@@ -12,4 +12,4 @@ class Config:
     test_file = './data/track1_test.txt'
     target_dir = './models/'
     seq_len = 16
-    use_bilstm=False
+    use_bilstm=True
