@@ -89,6 +89,8 @@ def evaluate(model,dev_data_loader):
         loss_item = loss.item()
         preds =torch.sigmoid(logits).detach().cpu().numpy()
         gold = batch[2].detach().cpu().numpy()
+        print(np.shape(gold))
+        print(np.shape(preds))
         for i in range(len(gold)):
             gold_list = gold[i].tolist()
             gold_list = [int(v) for v in gold_list]
