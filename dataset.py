@@ -56,7 +56,7 @@ def collate_fn_wiki(batch):
             sentence.append('[PAD]')
             labels.append([0]*5)
         title = sent2title[sentence[0]]
-        batch_data.extend([title+'[SEP'+s for s in sentence])
+        batch_data.extend([s for s in sentence])
         batch_targets.extend(labels)
     tokens = tokenizer(
                     batch_data,

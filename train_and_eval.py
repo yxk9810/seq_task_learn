@@ -91,9 +91,13 @@ def evaluate(model,dev_data_loader):
         gold = batch[2].detach().cpu().numpy()
         for i in range(len(gold)):
             gold_list = gold[i].tolist()
+            print(len(gold_list))
+            print(len(gold))
+            print(gold_list)
             pred_list = preds[i].tolist()
             print(gold_list[0])
             print(pred_list[0])
+            print(len(gold_list[0]))
             sys.exit(1)
             tmp_gold = []
             tmp_preds =[] 
