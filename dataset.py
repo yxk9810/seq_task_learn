@@ -48,7 +48,7 @@ def collate_fn_wiki(batch):
         labels = d['labels'][:max_sentences_num]
         while len(sentence)<max_sentences_num:
             sentence.append('[PAD]')
-            labels.append(0)
+            labels.append(-100)
         batch_data.extend(sentence)
         batch_targets.append([int(v) for v in labels])
     tokens = tokenizer(
