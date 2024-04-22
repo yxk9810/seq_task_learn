@@ -90,8 +90,8 @@ def evaluate(model,dev_data_loader):
         preds =torch.sigmoid(logits).view(-1,config.class_num).detach().cpu().numpy()
         gold = batch[2].detach().cpu().numpy()
         # preds = preds.reshape(np.shape(gold)[0],config.seq_len,config.class_num)
-        print(np.shape(gold))
-        print(np.shape(preds))
+        # print(np.shape(gold))
+        # print(np.shape(preds))
         for i in range(len(gold)):
             gold_list = gold[i].tolist()
             pred_list = preds[i].tolist()
