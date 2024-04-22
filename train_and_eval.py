@@ -87,7 +87,7 @@ def evaluate(model,dev_data_loader):
         #loss = loss_fct(logits.view(-1,config.class_num),labels.view(-1))
         loss= F.binary_cross_entropy_with_logits(logits.view(-1,config.class_num),labels)
         loss_item = loss.item()
-        preds =torch.sigmoid(logits,dim=-1).detach().cpu().numpy()
+        preds =torch.sigmoid(logits).detach().cpu().numpy()
         gold = batch[2].detach().cpu().numpy()
         for i in range(len(gold)):
             gold_list = gold[i].tolist()
