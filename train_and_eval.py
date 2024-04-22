@@ -27,6 +27,7 @@ model = SeqModel(config)
 model.to(device)
 from sklearn.metrics import classification_report
 optimizer = AdamW(model.parameters(),lr = config.learning_rate)
+from torch.nn import functional as F
 
 
 class FocalLoss(nn.Module):
@@ -58,7 +59,8 @@ def train(model,train_data_loader):
         logits = model(sent_id,mask)
         loss_fct =  nn.CrossEntropyLoss()
         loss_fct  = FocalLoss()
-        loss = loss_fct(logits.view(-1,config.class_num),labels.view(-1))
+        #loss = loss_fct(logits.view(-1,config.class_num),labels.view(-1))
+        loss= F.binary_cross_entropy_with_logits(logits.view(-1,config.class_num),labels)
         loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         #update parameters 
@@ -82,13 +84,17 @@ def evaluate(model,dev_data_loader):
         logits = model(sent_id,mask)
         loss_fct =  nn.CrossEntropyLoss()
         loss_fct  = FocalLoss()
-        loss = loss_fct(logits.view(-1,config.class_num),labels.view(-1))
+        #loss = loss_fct(logits.view(-1,config.class_num),labels.view(-1))
+        loss= F.binary_cross_entropy_with_logits(logits.view(-1,config.class_num),labels)
         loss_item = loss.item()
-        preds =torch.argmax(torch.softmax(logits,dim=-1),dim=-1).detach().cpu().numpy()
+        preds =torch.sigmoid(logits,dim=-1).detach().cpu().numpy()
         gold = batch[2].detach().cpu().numpy()
         for i in range(len(gold)):
             gold_list = gold[i].tolist()
             pred_list = preds[i].tolist()
+            print(gold_list[0])
+            print(pred_list[0])
+            sys.exit(1)
             tmp_gold = []
             tmp_preds =[] 
             for g,p in zip(gold_list,pred_list):
