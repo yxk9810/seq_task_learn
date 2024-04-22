@@ -23,7 +23,7 @@ class SeqModel(nn.Module):
         inter_seg_output, hidden2 = self.bi_lstm2(output)  # [b,num_seg,768]=>[b,num_seg,768], [b,2,d_model//2]
         inter_seg_output = self.dropout(inter_seg_output)
         #
-        seg_repr = torch.reshape(output,[inter_seg_output,self.config.seq_len,self.config.hidden_size])
+        seg_repr = torch.reshape(inter_seg_output,[-1,self.config.seq_len,self.config.hidden_size])
         logits = self.linear(seg_repr)
         logits = torch.reshape(logits,(-1,self.config.seq_len,self.config.class_num)) 
         return logits
