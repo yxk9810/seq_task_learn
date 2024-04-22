@@ -107,11 +107,11 @@ def evaluate(model,dev_data_loader):
 
 dataset = ZhWikipediaDataSet(filepath=config.train_file)
 print("train data siz {}".format(len(dataset)))
-train_data_loader = DataLoader(dataset, batch_size=8, collate_fn = collate_fn_wiki, shuffle=True)
+train_data_loader = DataLoader(dataset, batch_size=2, collate_fn = collate_fn_wiki, shuffle=True)
 dev_dataset = ZhWikipediaDataSet(filepath=config.dev_file)
 print("train data siz {}".format(len(dev_dataset)))
 
-dev_data_loader =  DataLoader(dev_dataset, batch_size=4, collate_fn = collate_fn_wiki, shuffle=False)
+dev_data_loader =  DataLoader(dev_dataset, batch_size=2, collate_fn = collate_fn_wiki, shuffle=False)
 best_valid_loss = float('inf')
 for epoch in range(config.epoch):
     print('\n Epoch {:} / {:}'.format(epoch+1 ,config.epoch ))
