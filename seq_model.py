@@ -23,7 +23,7 @@ class SeqModel(nn.Module):
         output = self.dropout(pooled_output)
         if self.config.use_bilstm :
             inter_seg_output, hidden2 = self.bi_lstm2(output)  # [b,num_seg,768]=>[b,num_seg,768], [b,2,d_model//2]
-            inter_seg_output = self.dropout(inter_seg_output)
+            output = self.dropout(inter_seg_output)
         seg_repr = torch.reshape(output,[-1,self.config.seq_len,self.config.hidden_size])
         #
         logits = self.linear(seg_repr)
