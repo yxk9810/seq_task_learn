@@ -8,6 +8,12 @@ from config import checkpoint_name
 tokenizer = BertTokenizer.from_pretrained(checkpoint_name)
 from config import Config 
 config = Config()
+import json 
+sent2title = {}
+track1_data = json.load(open('./data/track1_train.json','r',encoding='utf-8'))
+for d in track1_data:
+    for sent in d['sentences']:
+        sent2title[sent] = d['title']
 class ZhWikipediaDataSet(Dataset):
     def __init__(self, filepath='',is_train = True,mini_test = False):
         self.mini_test = mini_test
@@ -49,7 +55,8 @@ def collate_fn_wiki(batch):
         while len(sentence)<max_sentences_num:
             sentence.append('[PAD]')
             labels.append(-100)
-        batch_data.extend(sentence)
+        title = sent2title[sentence[0]]
+        batch_data.extend([title+'[SEP'+s for s in sentence])
         batch_targets.append([int(v) for v in labels])
     tokens = tokenizer(
                     batch_data,
@@ -61,19 +68,3 @@ def collate_fn_wiki(batch):
     #y = torch.tensor(batched_targets,dtype=torch.float32).unsqueeze(axis=1)
     y = torch.tensor(batch_targets,dtype=torch.long)    
     return seq, mask, y
-
-        
-  
-
-# dataset = ZhWikipediaDataSet(filepath='/Users/wujindou/Downloads/wiki-zh/local_train.txt')
-
-# batch = [dataset.__getitem__(i) for i in range(2)]
-
-# seq,mask,y = collate_fn_wiki(batch)
-# from seq_model import SeqModel
-
-# from config import config
-
-# sm = SeqModel(config)
-
-# sm(seq,mask,y)

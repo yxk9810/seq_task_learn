@@ -28,6 +28,7 @@ model.to(device)
 from sklearn.metrics import classification_report
 optimizer = AdamW(model.parameters(),lr = config.learning_rate)
 
+
 class FocalLoss(nn.Module):
     """Multi-class Focal loss implementation"""
     def __init__(self, gamma=2, weight=None, reduction='mean', ignore_index=-100):
@@ -85,8 +86,6 @@ def evaluate(model,dev_data_loader):
         loss_item = loss.item()
         preds =torch.argmax(torch.softmax(logits,dim=-1),dim=-1).detach().cpu().numpy()
         gold = batch[2].detach().cpu().numpy()
-        # print(gold.shape)
-        # print(preds.shape)
         for i in range(len(gold)):
             gold_list = gold[i].tolist()
             pred_list = preds[i].tolist()
@@ -98,11 +97,6 @@ def evaluate(model,dev_data_loader):
                 tmp_preds.append(p)
             golds.extend(tmp_gold)
             predicts.extend(tmp_preds)
-            # print(gold[i].tolist())
-            # print(preds[i].tolist())
-            # print(golds[-1])
-            # print(predicts[-1])
-            # sys.exit(1)
             if tmp_gold==tmp_preds:
                 count+=1
         total_loss+=loss_item
