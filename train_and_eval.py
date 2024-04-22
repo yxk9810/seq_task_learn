@@ -28,7 +28,26 @@ model.to(device)
 from sklearn.metrics import classification_report
 optimizer = AdamW(model.parameters(),lr = config.learning_rate)
 
+class FocalLoss(nn.Module):
+    """Multi-class Focal loss implementation"""
+    def __init__(self, gamma=2, weight=None, reduction='mean', ignore_index=-100):
+        super(FocalLoss, self).__init__()
+        self.gamma = gamma
+        self.weight = weight
+        self.ignore_index = ignore_index
+        self.reduction = reduction
 
+    def forward(self, input, target):
+        """
+        input: [N, C]
+        target: [N, ]
+        """
+        log_pt = torch.log_softmax(input, dim=1)
+        pt = torch.exp(log_pt)
+        log_pt = (1 - pt) ** self.gamma * log_pt
+        loss = torch.nn.functional.nll_loss(log_pt, target, self.weight, reduction=self.reduction, ignore_index=self.ignore_index)
+        return loss
+        
 def train(model,train_data_loader):
     model.train()
     total_loss,total_accuracy = 0,0 
@@ -37,6 +56,7 @@ def train(model,train_data_loader):
         model.zero_grad()
         logits = model(sent_id,mask)
         loss_fct =  nn.CrossEntropyLoss()
+        loss_fct  = FocalLoss()
         loss = loss_fct(logits.view(-1,config.class_num),labels.view(-1))
         loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
@@ -60,6 +80,7 @@ def evaluate(model,dev_data_loader):
         sent_id,mask,labels = batch[0].to(device),batch[1].to(device),batch[2].to(device)
         logits = model(sent_id,mask)
         loss_fct =  nn.CrossEntropyLoss()
+        loss_fct  = FocalLoss()
         loss = loss_fct(logits.view(-1,config.class_num),labels.view(-1))
         loss_item = loss.item()
         preds =torch.argmax(torch.softmax(logits,dim=-1),dim=-1).detach().cpu().numpy()
