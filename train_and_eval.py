@@ -87,32 +87,43 @@ def evaluate(model,dev_data_loader):
         #loss = loss_fct(logits.view(-1,config.class_num),labels.view(-1))
         loss= F.binary_cross_entropy_with_logits(logits.view(-1,config.class_num),labels)
         loss_item = loss.item()
-        preds =torch.sigmoid(logits).detach().cpu().numpy()
+        preds =torch.sigmoid(logits.view(-1,config.class_num)).detach().cpu().numpy()
         gold = batch[2].detach().cpu().numpy()
-        print(np.shape(gold))
-        print(np.shape(preds))
+        preds = preds.reshape(np.shape(gold)[0],config.seq_len,config.class_num)
+        # print(np.shape(gold))
+        # print(np.shape(preds))
         for i in range(len(gold)):
             gold_list = gold[i].tolist()
-            gold_list = [int(v) for v in gold_list]
-            print(len(preds[i]))
-            print(len(gold_list))
-            sys.exit(1)
+            pred_list = preds[i].tolit()
             # print(len(gold_list))
             # print(len(gold))
             # print(gold_list)
-            pred_list = [int(p>0.5) for p in preds[i].tolist()]
+            #pred_list = [int(p>0.5) for p in preds[i].tolist()]
             # print(gold_list[0])
             # print(pred_list[0])
             # print(len(gold_list[0]))
             # sys.exit(1)
-            # tmp_gold = []
-            # tmp_preds =[] 
-            # for g,p in zip(gold_list,pred_list):
+            tmp_gold = []
+            tmp_preds =[] 
+            for g,p in zip(gold_list,pred_list):
+
             #     if g==-100:continue 
             #     tmp_gold.append(g)
             #     tmp_preds.append(p)
-            golds.extend(gold_list)
-            predicts.extend(pred_list)
+                #golds.extend(g)
+                for t_idx,tg in enumerate(g):
+                    if tg==1:
+                        tmp_gold.append(t_idx)
+                    else:
+                        tmp_gold.append(0)
+                for t_idx,tp in enumerate(p):
+                    if tp>=0.5:
+                        tmp_preds.append(t_idx)
+                    else:
+                        tmp_preds.append(0)
+                    
+            golds.extend(tmp_gold)
+            predicts.extend(tmp_preds)
             if gold_list == pred_list:
                 count+=1
         total_loss+=loss_item
