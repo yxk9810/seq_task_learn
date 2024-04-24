@@ -8,7 +8,7 @@ class Config:
     learning_rate = 2e-5 
     class_num = 5 
     epoch = 5
-    train_file = './data/track1_train_0422.txt'
+    train_file = './data/track1_train_aug_0422.txt'
     dev_file = './data/track1_dev_0422.txt'
     test_file = './data/track1_test_0422.txt'
     target_dir = './models/'
