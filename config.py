@@ -1,6 +1,7 @@
 #coding:utf-8
 #define config file 
 checkpoint_name = 'bert-base-chinese'
+checkpoint_name = 'hfl/chinese-roberta-wwm-ext'
 class Config:
     pretrain_model_path = checkpoint_name
     hidden_size = 768
